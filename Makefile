@@ -29,5 +29,5 @@ clean:
 	rm -rf torrent_config
 	rm -rf jackett_config
 	rm -rf media
-	rm -rf radar_config
+	rm -rf radarr_config
 	rm -rf sonarr_config
