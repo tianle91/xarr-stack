@@ -1,0 +1,49 @@
+version: "3"
+services:
+  vpn:
+    image: ghcr.io/bubuntux/nordvpn
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - TOKEN=??? # https://my.nordaccount.com/dashboard/nordvpn/manual-configuration/
+      - CONNECT=Canada
+      - TECHNOLOGY=NordLynx
+      - NETWORK=192.168.1.0/24  # local network access
+    ports:
+      - 8080:8080 # exposes qbittorrent port
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1  # Recomended if using ipv4 only
+  torrent:
+    image: ghcr.io/linuxserver/qbittorrent # default username/password is admin/adminadmin.
+    network_mode: service:vpn
+    volumes:
+      - ./torrent_config:/config
+      - ./downloads:/downloads
+    depends_on:
+      - vpn
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    volumes:
+      - ./jackett_config/:/config
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    volumes:
+      - ./radarr_config/:/config
+      - ./media/movies/:/movies
+      - ./downloads/:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    volumes:
+      - ./sonarr_config/:/config
+      - ./media/tv/:/tv
+      - ./downloads/:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
