@@ -55,4 +55,6 @@ services:
     volumes:
       - ./plex:/config # Plex library location. This can grow very large, 50gb+ is likely for a large collection.
       - ./media:/media
+    ports:
+      - 32400:32400 # for remote access
     restart: unless-stopped
