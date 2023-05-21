@@ -1,49 +1,58 @@
 version: "3"
 services:
-  vpn:
-    image: ghcr.io/bubuntux/nordvpn
+  gluetun:
+    # https://github.com/bubuntux/nordvpn/issues/399#issuecomment-1547743008
+    image: qmcgaw/gluetun
     cap_add:
       - NET_ADMIN
-      - NET_RAW
+    devices:
+      - /dev/net/tun:/dev/net/tun
     environment:
-      - TOKEN=??? # https://my.nordaccount.com/dashboard/nordvpn/manual-configuration/
-      - CONNECT=Canada
-      - TECHNOLOGY=NordLynx
-      - NETWORK=192.168.1.0/24  # local network access
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=
+      - OPENVPN_PASSWORD=
+      - REGION=Canada
     ports:
-      - 8080:8080 # exposes qbittorrent port
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=1  # Recomended if using ipv4 only
-  torrent:
-    image: ghcr.io/linuxserver/qbittorrent # default username/password is admin/adminadmin.
-    network_mode: service:vpn
+      - 8080:8080 # qbittorrent ui
     volumes:
-      - ./torrent_config:/config
-      - ./downloads:/downloads
+      - ./gluetun:/gluetun
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent # default username/password is admin/adminadmin.
+    network_mode: service:gluetun
     depends_on:
-      - vpn
+      - gluetun
+    volumes:
+      - ./qbittorrent:/config
+      - ./media:/media # Need to set download path to some folder in /media
   jackett:
     image: lscr.io/linuxserver/jackett:latest
     volumes:
-      - ./jackett_config/:/config
+      - ./jackett/:/config
     ports:
       - 9117:9117
     restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     volumes:
-      - ./radarr_config/:/config
-      - ./media/movies/:/movies
-      - ./downloads/:/downloads
+      - ./radarr/:/config
+      - ./media:/media # set root path to /media/movies but container needs /media
     ports:
       - 7878:7878
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     volumes:
-      - ./sonarr_config/:/config
-      - ./media/tv/:/tv
-      - ./downloads/:/downloads
+      - ./sonarr/:/config
+      - ./media:/media # set root path to /media/shows but container needs /media
     ports:
       - 8989:8989
+    restart: unless-stopped
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    environment:
+      - VERSION=docker
+      - PLEX_CLAIM= # from  https://plex.tv/claim
+    volumes:
+      - ./plex:/config # Plex library location. This can grow very large, 50gb+ is likely for a large collection.
+      - ./media:/media
     restart: unless-stopped
