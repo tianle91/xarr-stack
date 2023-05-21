@@ -1,33 +1,33 @@
 .DEFAULT_GOAL := all
 
-downloads:
-	mkdir downloads
-
-torrent_config:
-	mkdir torrent_config
-
-jackett_config:
-	mkdir jackett_config
-
 media:
 	mkdir media
 
-radarr_config: media
-	mkdir radarr_config
+gluetun:
+	mkdir gluetun
+
+qbittorrent:
+	mkdir qbittorrent
+
+jackett:
+	mkdir jackett
+
+radarr: media
+	mkdir radarr
 	mkdir media/movies
 
-sonarr_config: media
-	mkdir sonarr_config
-	mkdir media/tv
+sonarr: media
+	mkdir sonarr
+	mkdir media/shows
 
 .PHONY: all
-all: downloads torrent_config jackett_config radarr_config sonarr_config
+all: media gluetun qbittorrent jackett radarr sonarr
 
 .PHONY: clean
 clean:
-	rm -rf downloads
-	rm -rf torrent_config
-	rm -rf jackett_config
 	rm -rf media
-	rm -rf radarr_config
-	rm -rf sonarr_config
+	rm -rf gluetun
+	rm -rf qbittorrent
+	rm -rf jackett
+	rm -rf radarr
+	rm -rf sonarr

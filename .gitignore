@@ -1,5 +1,6 @@
-jackett_config
-radarr_config
-sonarr_config
-torrent_config
-
+media
+gluetun
+qbittorrent
+jackett
+radarr
+sonarr
