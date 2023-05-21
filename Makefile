@@ -20,8 +20,11 @@ sonarr: media
 	mkdir sonarr
 	mkdir media/shows
 
+plex:
+	mkdir plex
+
 .PHONY: all
-all: media gluetun qbittorrent jackett radarr sonarr
+all: media gluetun qbittorrent jackett radarr sonarr plex
 
 .PHONY: clean
 clean:
@@ -31,3 +34,4 @@ clean:
 	rm -rf jackett
 	rm -rf radarr
 	rm -rf sonarr
+	rm -rf plex
