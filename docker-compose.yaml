@@ -16,6 +16,7 @@ services:
       - 8080:8080 # qbittorrent ui
     volumes:
       - ./gluetun:/gluetun
+    restart: unless-stopped
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent # default username/password is admin/adminadmin.
     network_mode: service:gluetun
@@ -24,6 +25,7 @@ services:
     volumes:
       - ./qbittorrent:/config
       - ./media:/media # Need to set download path to some folder in /media
+    restart: unless-stopped
   jackett:
     image: lscr.io/linuxserver/jackett:latest
     volumes:
