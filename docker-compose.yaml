@@ -49,6 +49,14 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
+  bazarr:
+    image: linuxserver/bazarr
+    volumes:
+      - ./bazarr:/config
+      - ./media:/media
+    ports:
+      - 6767:6767
+    restart: unless-stopped
   plex:
     image: lscr.io/linuxserver/plex:latest
     environment:

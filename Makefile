@@ -20,6 +20,9 @@ sonarr: media
 	mkdir sonarr
 	mkdir media/shows
 
+bazarr: media
+	mkdir bazarr
+
 plex:
 	mkdir plex
 
@@ -34,4 +37,5 @@ clean:
 	rm -rf jackett
 	rm -rf radarr
 	rm -rf sonarr
+	rm -rf bazarr
 	rm -rf plex
