@@ -1,10 +1,4 @@
 # xarr-stack
-https://github.com/bubuntux/nordvpn
-https://hub.docker.com/r/linuxserver/sonarr
-
-Fill out the following in `docker-compose.yaml`:
-```yaml
-- OPENVPN_USER=
-- OPENVPN_PASSWORD=
-- PLEX_CLAIM=
-```
+Fill out everything in [`.env`](.env) and then run `docker-compose up`.
+Make sure that this directory is on a fast storage device since the application configurations need fast random i/o.
+The `MEDIA_ROOT_FOLDER` can be on a slow storage device.
