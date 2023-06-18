@@ -26,12 +26,12 @@ services:
       - ./qbittorrent:/config
       - "${MEDIA_ROOT_FOLDER}:/media" # Set qbittorrent download path to /media/something
     restart: unless-stopped
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
     volumes:
-      - ./jackett/:/config
+      - ./prowlarr:/config
     ports:
-      - 9117:9117
+      - 9696:9696
     restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest

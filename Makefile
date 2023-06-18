@@ -9,8 +9,8 @@ gluetun:
 qbittorrent:
 	mkdir qbittorrent
 
-jackett:
-	mkdir jackett
+prowlarr:
+	mkdir prowlarr
 
 radarr: media
 	mkdir radarr
@@ -27,14 +27,14 @@ plex:
 	mkdir plex
 
 .PHONY: all
-all: media gluetun qbittorrent jackett radarr sonarr plex
+all: media gluetun qbittorrent prowlarr radarr sonarr plex
 
 .PHONY: clean
 clean:
 	rm -rf media
 	rm -rf gluetun
 	rm -rf qbittorrent
-	rm -rf jackett
+	rm -rf prowlarr
 	rm -rf radarr
 	rm -rf sonarr
 	rm -rf bazarr
