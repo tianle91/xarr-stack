@@ -1,17 +1,16 @@
 version: "3"
 services:
   gluetun:
-    # https://github.com/bubuntux/nordvpn/issues/399#issuecomment-1547743008
-    image: qmcgaw/gluetun
+    image: qmcgaw/gluetun:v3.35
     cap_add:
       - NET_ADMIN
     devices:
       - /dev/net/tun:/dev/net/tun
     environment:
-      - "VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}"
-      - "OPENVPN_USER=${OPENVPN_USER}"
-      - "OPENVPN_PASSWORD=${OPENVPN_PASSWORD}"
-      - "REGION=${REGION}"
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - SERVER_COUNTRIES=Canada
     ports:
       - 8080:8080 # qbittorrent ui
     volumes:
@@ -20,8 +19,9 @@ services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent # default username/password is admin/adminadmin.
     network_mode: service:gluetun
-    depends_on:
-      - gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - ./qbittorrent:/config
       - "${MEDIA_ROOT_FOLDER}:/media" # Set qbittorrent download path to /media/something
@@ -35,6 +35,9 @@ services:
     restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - ./radarr/:/config
       - "${MEDIA_ROOT_FOLDER}:/media" # Set radarr root path to /media/movies
@@ -43,6 +46,9 @@ services:
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - ./sonarr/:/config
       - "${MEDIA_ROOT_FOLDER}:/media" # Set sonarr root path to /media/shows
@@ -51,6 +57,9 @@ services:
     restart: unless-stopped
   bazarr:
     image: linuxserver/bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     volumes:
       - ./bazarr:/config
       - "${MEDIA_ROOT_FOLDER}:/media"
