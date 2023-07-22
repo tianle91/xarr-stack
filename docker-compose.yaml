@@ -66,14 +66,3 @@ services:
     ports:
       - 6767:6767
     restart: unless-stopped
-  plex:
-    image: lscr.io/linuxserver/plex:latest
-    environment:
-      - VERSION=docker
-      - PLEX_CLAIM= # from  https://plex.tv/claim
-    volumes:
-      - ./plex:/config # Plex library location. This can grow very large, 50gb+ is likely for a large collection.
-      - "${MEDIA_ROOT_FOLDER}:/media"
-    ports:
-      - 32400:32400 # for remote access
-    restart: unless-stopped
